@@ -1,22 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<style>
-    #container {
-        height: 500px;
-        width: 500px;
-    }
-</style>
-<script src="https://d3js.org/d3.v4.min.js"></script>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>RIP</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+     <style>
 
-</head>
-<body>
-    
-    	<svg id = "container"></svg>
-    
+	    html, body {
+		    margin: 0;
+		    padding: 0;
+		    height: 100%;
+		    width: 100%;
+	    }
+
+	    path{
+	    	stroke: red;
+	    	fill: none;
+	    	stroke-width: 2px;
+	    }
+
+    </style>
+  </head>
+  <body>
+
+	<script type="text/javascript">
+
+var projection = d3.geoMercator()
+    .scale(85)
+    .translate([960/2, 500/2*1.3])
+
+// A path generator
+var path = d3.geoPath()
+    .projection(projection);
+
+var lineFunction = d3.line()
+                      .x(function(d) { return d.lat; })
+                      .y(function(d) { return d.lon; })
+
+d3.csv("scaled.csv",function(data) {
+  data.forEach(function(d) {
+    d.lat = +d.lat;
+    d.lon = +d.lon
+  });
+
+  svg = d3.select("body").append("svg")
+    .attr("width", 960)
+    .attr("height", 500) 
+    .attr('transform','translate(100 100)');
+
+	path = svg.data(data)
+	.append("path")
+	.attr("d", lineFunction(data))
+	
+ var totalLength = path.node().getTotalLength();
+
+      path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+          .duration(4000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0)
 
 
- 
-</body>
-<script src="drawing circles.js"></script>
+});
+
+
+	</script>
+  </body>
 </html>
