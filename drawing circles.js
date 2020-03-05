@@ -4,7 +4,7 @@
                  190, 210, 230, 250, 270, 290, 310, 330,
                  350, 370, 390, 410, 430, 450, 470, 490]
 
-  var i =0;
+  var i = 0;
   // If use d3.timer, get a slightly different animation
   var t = d3.interval(function(elapsed) {
     svg.append("circle")
