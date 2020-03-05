@@ -1,3 +1,3 @@
 # visuals
 
-https://mjstansfi.github.io/visuals/
+https://sjolive.github.io/visuals/
