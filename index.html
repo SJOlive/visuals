@@ -29,7 +29,7 @@ var lineFunction = d3.line()
                       .x(function(d) { return d.lat; })
                       .y(function(d) { return d.lon; })
 
-d3.csv("/scaled.csv",function(data) {
+d3.csv("https://raw.githubusercontent.com/MjStansfi/visuals/master/scaled.csv",function(data) {
   data.forEach(function(d) {
     d.lat = +d.lat;
     d.lon = +d.lon
