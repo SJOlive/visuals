@@ -36,14 +36,17 @@ d3.csv("https://raw.githubusercontent.com/MjStansfi/visuals/master/scaled.csv",f
   });
 
   svg = d3.select("body").append("svg")
-    .attr("width", 960)
-    .attr("height", 500) 
+    .attr("width", 2000)
+    .attr("height", 1000) 
     .attr('transform','translate(100 100)');
 
 	path = svg.data(data)
 	.append("path")
-	.attr("d", lineFunction(data))
+	.attr("d", lineFunction(data));
+	repeat();
 	
+function repeat(){
+
  var totalLength = path.node().getTotalLength();
 
       path
@@ -53,10 +56,10 @@ d3.csv("https://raw.githubusercontent.com/MjStansfi/visuals/master/scaled.csv",f
           .duration(4000)
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0)
-
-
+          .on('end', repeat);
+     
+}
 });
-
 
 	</script>
   </body>
