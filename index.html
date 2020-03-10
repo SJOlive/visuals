@@ -1,66 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>My run</title>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-     <style>
 
-	    html, body {
-		    margin: 0;
-		    padding: 0;
-		    height: 100%;
-		    width: 100%;
-	    }
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>My run</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
 
-	    path{
-	    	stroke: red;
-	    	fill: none;
-	    	stroke-width: 2px;
-	    }
+    path {
+      stroke: red;
+      fill: none;
+      stroke-width: 3px;
+    }
+    
+  </style>
+</head>
 
-    </style>
-  </head>
-  <body>
+<body>
 
-	<script type="text/javascript">
+  <script type="text/javascript">
 
-var lineFunction = d3.line()
-                      .x(function(d) { return d.lat; })
-                      .y(function(d) { return d.lon; })
+    var lineFunction = d3.line()
+      .x(function (d) { return d.lat; })
+      .y(function (d) { return d.lon; })
 
-d3.csv("https://raw.githubusercontent.com/MjStansfi/visuals/master/scaled.csv",function(data) {
-  data.forEach(function(d) {
-    d.lat = +d.lat;
-    d.lon = +d.lon
-  });
+    d3.csv("https://raw.githubusercontent.com/MjStansfi/visuals/master/scaled.csv", function (data) {
+      data.forEach(function (d) {
+        d.lat = +d.lat;
+        d.lon = +d.lon
+      });
 
-  svg = d3.select("body").append("svg")
-    .attr("width", 2000)
-    .attr("height", 1000) 
-    .attr('transform','translate(100 100)');
+      svg = d3.select("body").append("svg")
+        .attr("width", 2000)
+        .attr("height", 1000)
+        .attr('transform', 'translate(100 100)');
 
-	path = svg.data(data)
-	.append("path")
-	.attr("d", lineFunction(data));
-	repeat();
-	
-function repeat(){
+      path2 = svg.data(data)
+        .append("path")
+        .style("stroke", "grey")
+        .style("alpha", 0.5)
+        .style("stroke-width", 0.5)
+        .attr("stroke-dasharray", "20 20")
+        .attr("d", lineFunction(data));
 
- var totalLength = path.node().getTotalLength();
+      path = svg.data(data)
+        .append("path")
+        .attr("d", lineFunction(data));
 
-      path
-        .attr("stroke-dasharray", totalLength + " " + totalLength)
-        .attr("stroke-dashoffset", totalLength)
-        .transition()
-          .duration(100)
+      repeat();
+
+      function repeat() {
+
+        var totalLength = path.node().getTotalLength();
+        const snake_length = 300;
+
+        path
+          .attr("stroke-dasharray", snake_length + " " + (totalLength-(0*snake_length)))
+          .attr("stroke-dashoffset", totalLength + (2 * snake_length) )
+          .transition()
+          .duration(6000)
           .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0)
+          .attr("stroke-dasharray", (1*snake_length) + " " + (totalLength-(0*snake_length)))
+          .attr("stroke-dashoffset", (1*snake_length))
           .on('end', repeat);
-     
-}
-});
 
-	</script>
-  </body>
+      }
+    });
+
+  </script>
+</body>
+
 </html>
