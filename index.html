@@ -52,7 +52,9 @@
 
       path = svg.data(data)
         .append("path")
-        .attr("d", lineFunction(data));
+        .attr("d", lineFunction(data))
+        .attr("stroke-dasharray", snake_length + " " + (totalLength))
+        .attr("stroke-dashoffset", totalLength + (2 * snake_length) );
 
       repeat();
 
@@ -62,13 +64,11 @@
         const snake_length = 300;
 
         path
-          .attr("stroke-dasharray", snake_length + " " + (totalLength-(0*snake_length)))
-          .attr("stroke-dashoffset", totalLength + (2 * snake_length) )
           .transition()
           .duration(6000)
           .ease(d3.easeLinear)
           .attr("stroke-dasharray", (1*snake_length) + " " + (totalLength-(0*snake_length)))
-          .attr("stroke-dashoffset", (1*snake_length))
+          .attr("stroke-dashoffset", (0*snake_length))
           .on('end', repeat);
 
       }
